@@ -1,0 +1,69 @@
+* Development of Agent-Based Modeling Games in Netlogo
+Amanda Page 5359758 pagex334@umn.edu
+
+Rough timeline:
+
+June
+- become familiar with Netlogo and with SEIR/SIR models from
+  epidemiology.
+
+July
+- implement Netlogo model for social distancing policies and behavior
+  regarding covid19.
+- put results in the form of an article
+- become familiar with games on networks, in particular, the threshold
+  complementarity game and the coordination game.
+
+August
+- implement threshold complementarity game and/or N-person
+  coordination game in Netlogo.
+- put results in the form of an article
+
+some notes and initial thoughts:
+
+*** social distancing policies/beliefs and covid19
+based on SEIR/SIR compartmental model. evolution of SEIR/SIR
+populations over time are usually modeled with a set of differential
+equations.  for example see:
+https://doktormike.gitlab.io/post/covid-19/
+but we want to model individual decision-making on whether to adopt
+social distancing guidelines, and how the SIR segments of the
+population rise and fall. is there an equilibrium, and if so, under
+what conditions is equilibrium reached?
+
+another idea: a model to measure the effectiveness (efficacy?) of
+testing and contact tracing. see:
+https://github.com/ryansmcgee/seirsplus#testing--contact-tracing
+
+thoughts: generally, the models on social distancing and mask-wearing
+adjust parameters so that the general direction of the result is
+obvious. the exact result, e.g. reduction in infections and delayed
+infections is not obvious, but still, if you reduce contact, you will
+reduce the number of infections. what is not obvious at all? what
+about a model for the trade-off between social distancing and the
+economy?
+
+==> ABM is used to observe emergent behavior, including learning and
+adaptation. 
+
+
+*** threshold complementarity game
+like the "Language Change" game in Netlogo models library, except that
+players will choose an action to maximize their payoff.
+
+*** coordination game
+N-person coordination game on a network. See section 3.3.2
+Coordination Games of Jackson's paper "Games on Networks".
+
+Demonstrate Proposition 3 and the idea of cohesiveness in
+a network. 
+
+Demonstrate Proposition 4 and the idea of contagion.
+
+See section 3.3.3. and probabilistic actions. this is like
+the "Language Change" game with what they call the "reward"
+algorithm. 
+
+Separately, Demonstrate the idea that players with more connections
+receive better payoffs, and perhaps receive payoffs more quickly?
+
