@@ -1,5 +1,4 @@
 * Development of Agent-Based Modeling Games in Netlogo
-Amanda Page 5359758 pagex334@umn.edu
 
 Rough timeline:
 
