@@ -34,8 +34,10 @@ See section 3.3.3. and probabilistic actions. this is like
 the "Language Change" game with what they call the "reward"
 algorithm. 
 
-Separately, Demonstrate the idea that players with more connections
+*** social connections create personal advantages
+Demonstrate the idea that players with more connections
 receive better payoffs, and perhaps receive payoffs more quickly?
+Is it the case that agents without connections are unable to form them?
 
 *** social distancing policies/beliefs and covid19
 based on SEIR/SIR compartmental model. evolution of SEIR/SIR
