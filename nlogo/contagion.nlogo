@@ -8,6 +8,7 @@ breed [nodes node]
 nodes-own [
   action        ; action (either 0 or 1)
   orig-action   ; each person's initially assigned action
+  action-1-sum  ; used when forming beliefs about the actions of neighbors
 ]
 
 to setup
@@ -19,6 +20,7 @@ to setup
   distribute-actions
   create-network
   reset-ticks
+  action-dbg
 end
 
 ; create the nodes in 1-dimensional lattice
@@ -58,9 +60,7 @@ to create-network
 end
 
 to update-color
-  ifelse action = 0
-  [ set color black ]
-  [ set color white ]
+  set color ifelse-value action = 0 [black] [white]
 end
 
 to reset-nodes
@@ -79,24 +79,26 @@ to redistribute-actions
 end
 
 to go
-  ask nodes [ play-game ]
+  ; in the ask commands below the order of node exection is random, hence the separate steps
+  ask nodes [ check-neighbors ] ; first all nodes note the actions of their neighbors (or form beliefs)
+  ask nodes [ take-action ]     ; then all nodes take the action with the highest expected payoff
   ask nodes [ update-color ]
   tick
+  action-dbg
+end
 
-  ; debugging, show actions of all nodes
+to check-neighbors
+  set action-1-sum sum [action] of link-neighbors
+end
+
+to take-action
+  set action ifelse-value (action-1-sum >= 1) and (q < 0.5) [1] [0]
+end
+
+to action-dbg  ; debugging, show actions of all nodes
   foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] nodes [ i ->
     ask i [ show action ]
   ]
-end
-
-to play-game
-  let action-1-sum sum [action] of link-neighbors
-  ifelse action-1-sum >= 1 [
-    ifelse q < 0.5
-      [ set action 1 ]
-      [ set action 0 ]
-  ]
-  [ set action 0 ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -221,7 +223,7 @@ BUTTON
 10
 120
 204
-151
+153
 redistribute actions
 redistribute-actions
 NIL
