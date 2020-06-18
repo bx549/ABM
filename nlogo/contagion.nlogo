@@ -11,7 +11,7 @@ breed [nodes node]
 nodes-own [
   action        ; action (either 0 or 1)
   orig-action   ; each person's initially assigned action
-  action-1-sum  ; used when forming beliefs about the actions of neighbors
+  action-1-sum  ; number of neigbors that will take action 1 (or based on beliefs)
 ]
 
 to setup
@@ -23,7 +23,7 @@ to setup
   distribute-actions
   create-network
   reset-ticks
-  action-dbg
+  ;action-dbg
 end
 
 ; create the nodes in 1-dimensional lattice
@@ -95,7 +95,12 @@ to check-neighbors
 end
 
 to take-action
-  set action ifelse-value (action-1-sum >= 1) and (q < 0.5) [1] [0]
+  ; an agent will take the action that maxmizes the sum of his payoffs
+  ; from her interactions with each of her neighbors.
+  ; action 1 is a best response to the actions of her neighbors if
+  ; at least proportion q of her neighbors choose action 1.
+  let num-neighbors count link-neighbors
+  set action ifelse-value (action-1-sum / num-neighbors >= q) [1] [0]
 end
 
 to action-dbg  ; debugging, show actions of all nodes
