@@ -1,4 +1,6 @@
 * Development of Agent-Based Modeling Games in Netlogo
+==> ABM is used to observe emergent behavior, including learning and
+adaptation. 
 
 Rough timeline:
 
@@ -17,11 +19,11 @@ August
 
 some notes and initial thoughts:
 
-*** threshold complementarity game
+** threshold complementarity game
 like the "Language Change" game in Netlogo models library, except that
 players will choose an action to maximize their payoff.
 
-*** coordination game
+** coordination game
 N-person coordination game on a network. See section 3.3.2
 Coordination Games of Jackson's paper "Games on Networks".
 
@@ -30,24 +32,34 @@ a network.
 
 Demonstrate Proposition 4 and the idea of contagion.
 
+Propositions 3 and 4 are described in detail in Morris' article
+"Contagion".
+
+For Proposition 3 and Proposition 4, the main idea is simply provide
+an implementation in NetLogo to aid understanding of the equations
+(similar to the way that the predator-prey model aids in understanding
+the differential equations that define the population dynamics).
+
+Then, later, allow the network structure to change, i.e. new links
+can be formed and existing links are removed ???
+
 See section 3.3.3. and probabilistic actions. this is like
 the "Language Change" game with what they call the "reward"
 algorithm. 
 
-*** social connections create personal advantages
-Demonstrate the idea that players with more connections
+Separately, Demonstrate the idea that players with more connections
 receive better payoffs, and perhaps receive payoffs more quickly?
-Is it the case that agents without connections are unable to form them?
 
-*** social distancing policies/beliefs and covid19
+** social distancing policies/beliefs and covid19
 based on SEIR/SIR compartmental model. evolution of SEIR/SIR
 populations over time are usually modeled with a set of differential
 equations.  for example see:
-https://doktormike.gitlab.io/post/covid-19/
-but we want to model individual decision-making on whether to adopt
-social distancing guidelines, and how the SIR segments of the
-population rise and fall. is there an equilibrium, and if so, under
-what conditions is equilibrium reached?
+https://doktormike.gitlab.io/post/covid-19/ but we want to model
+individual decision-making on whether to adopt social distancing
+guidelines, and how the SIR segments of the population rise and
+fall. individuals would make decisions based on a perceived payoff (of
+wearing a mask). ???  is there an equilibrium, and if so, under what
+conditions is equilibrium reached?
 
 another idea: a model to measure the effectiveness (efficacy?) of
 testing and contact tracing. see:
@@ -61,7 +73,19 @@ reduce the number of infections. what is not obvious at all? what
 about a model for the trade-off between social distancing and the
 economy?
 
-==> ABM is used to observe emergent behavior, including learning and
-adaptation. 
+** inequality, distribution of wealth
+distribution of wealth has already been extensively studied, but what
+about social connections?  the idea that social connections create
+personal advantages is surely related to inequality if people without
+connections cannot form them.
 
+connections could mean access to education, healthcare, technology,
+information, ... these things are like sugar in the sugarscape.
 
+agents' behaviors are related to their position in the network.
+position could mean degree distribution, wealth, ... the cost of
+taking an action could be related to degree distribution, wealth, ...
+
+in jackson's model, a player's payoff depends only on the actions of
+her neighbors, but in the reality it could also depend on the
+aggregate action(s) of the population.
