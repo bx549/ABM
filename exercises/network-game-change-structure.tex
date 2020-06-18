@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{parskip}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym,paralist}
+\usepackage{comment}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\pagestyle{empty}
+
+\includecomment{solution}
+\excludecomment{solution}  % comment this out to create the solutions
+
+\newcommand{\bs}{\noindent\textbf{Solution.}~}
+\newcommand{\es}{\hfill $\square$}
+
+\setcounter{secnumdepth}{-1}
+
+\begin{document}
+\subsection{IE 5545 Changing the Network Structure}
+Adding links to a game of strategic substitutes can change the
+equilibrium structure in unexpected ways.  Consider the ``Best-shot''
+public goods game in which a player will receive a benefit of 1 if she
+or any of her neighbors take action 1 ( but she prefers that one of
+her neighbors take action 1). In this game the utility to player
+$i$ for taking action 0 or 1 is
+\begin{align*}
+  u_i(1,S_{N_i}) &= 1 - c\\
+  u_i(0,S_{N_i}) &= \begin{cases}
+    1 \quad \text{if $a_j=1$ for some $j \in N_i$}\\
+    0 \quad \text{if $a_j=0$ for all $j \in N_i$}
+    \end{cases}
+\end{align*}
+where $N_i$ are the neighbors of player $i$, $S_{N_i}$ are the
+strategies of the neighbors of player $i$, $a_j$ is the action taken
+by player j, and $0 < c < 1$ is the cost for taking action 1.  The
+following situation is a pure strategy Nash equilibrium for this
+game. Now, add a link that connects the two centrally located nodes
+and then change the players' behavior (i.e. choice of action) in a
+sequential manner until a new equilibrium is achieved.
+
+\vspace{.5in}
+\begin{center}
+\begin{tikzpicture}
+  \tikzstyle{every circle node}=[draw,inner sep=0pt,minimum size=7mm]
+  
+  \draw (-3,0) node[circle] (A) {1};
+
+  \draw (-3,2.8) node[circle] (C) {0};
+  \draw (-5,1.5) node[circle] (D) {0};
+  \draw (-4.8,-1.8) node[circle] (E) {0};
+  \draw (-1.2,-1.8) node[circle] (F) {0};
+  \draw (-1,1.5) node[circle] (G) {0};
+
+  \draw (5,0) node[circle] (B) {1};
+
+  \draw (5,2.8) node[circle] (H) {0};
+  \draw (3,1.5) node[circle] (I) {0};
+  \draw (3.2,-1.8) node[circle] (J) {0};
+  \draw (6.8,-1.8) node[circle] (K) {0};
+  \draw (7,1.5) node[circle] (L) {0};
+
+  \path (A) edge (C);
+  \path (A) edge (D);
+  \path (A) edge (E);
+  \path (A) edge (F);
+  \path (A) edge (G);
+
+  \path (B) edge (H);
+  \path (B) edge (I);
+  \path (B) edge (J);
+  \path (B) edge (K);
+  \path (B) edge (L);
+ 
+\end{tikzpicture}
+\end{center}
+
+\end{document}

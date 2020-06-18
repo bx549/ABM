@@ -1,5 +1,8 @@
 ; a model for contagion in 1 dimension
-; some of the ideas are taken from the Language Change model
+; this model corresponds to the following article:
+; Stephen Morris, Contagion, Review of Economic Studies, Vol 67, 2000
+
+; some of the ideas in the code are taken from the Language Change model
 
 globals [q]
 

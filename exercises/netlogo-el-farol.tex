@@ -1,0 +1,51 @@
+\documentclass{article}
+\input{/home/darin/MEGA/isye/preamble-homework.tex}
+
+\includecomment{solution}
+\excludecomment{solution}  % comment this out to create the solutions
+
+\begin{document}
+\subsection{Making decisions using inductive reasoning}
+
+People don't always make perfect ``rational'' decisions. One theory is
+that people recognize patterns or behaviors that lead to desired
+outcomes and they apply those patterns to future decisions, even
+though it may not be optimal to do so. This method of making decisions
+is \emph{inductive}. For a good description, read the article
+``\emph{Inductive Reasoning and Bounded Rationality}'' by Brian Arthur. It is
+available on Canvas.  Don't be put off by the title; the article is an
+easy read and it's only 6 pages long.  The purpose of this exercise is
+to experiment with the theory in that article.
+
+\begin{enumerate}
+\item Look in the NetLogo Models Library under the Sample Models/Social Science folder.
+  Open the ``El Farol'' model.
+\item Read the information about the model.
+\item Run the model with the default settings and observe the behavior of
+  bar attendance.
+\item Keep memory--size at its default value and vary
+  number--strategies.  Set number--strategies to 2, and then set it to
+  18. Notice the variation in bar attendance for these two settings and explain any
+  difference. \label{numstrategies}
+\item Now set number--strategies back to its default value of 10.  Set
+  memory--size to 2 and then to 10. Explain any difference.
+  \label{memsize}
+\end{enumerate}
+
+\begin{solution}
+  \bs
+  
+  \ref{numstrategies}) With only two possible strategies for predicting
+  attendance, there is little to no variation in bar attendance. If attendance
+  is more predictable, then one strategy is likely to always perform better
+  than the other, leading to more predictable behavior.
+
+  \ref{memsize}) When memory--size is set to 2, there is large variation in attendance
+  because the predictive strategies have little training data. When memory--size
+  is set to 10, then variation in attendance is reduced; the predictive accuracy of the
+  strategies is better estimated and patrons use the best strategies more consistently.
+  
+\end{solution}
+
+
+\end{document}
