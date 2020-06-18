@@ -4,8 +4,6 @@
 
 ; some of the ideas in the code are taken from the Language Change model
 
-globals [q]
-
 breed [nodes node]
 
 nodes-own [
@@ -16,7 +14,6 @@ nodes-own [
 
 to setup
   clear-all
-  set q 0.1
   set-default-shape nodes "circle"
   ask patches [ set pcolor gray ]
   make-nodes
@@ -87,7 +84,7 @@ to go
   ask nodes [ take-action ]     ; then all nodes take the action with the highest expected payoff
   ask nodes [ update-color ]
   tick
-  action-dbg
+  ;action-dbg
 end
 
 to check-neighbors
@@ -141,9 +138,9 @@ PLOT
 365
 365
 485
-Mean state of language users in the network
-Time
-State
+Mean action value in the network
+time
+action
 0.0
 100.0
 0.0
@@ -152,7 +149,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot mean [state] of nodes"
+"default" 1.0 0 -16777216 true "" "plot mean [action] of nodes"
 
 BUTTON
 10
@@ -190,9 +187,9 @@ NIL
 
 BUTTON
 10
-160
+185
 203
-194
+219
 reset states
 reset-nodes
 NIL
@@ -212,26 +209,11 @@ OUTPUT
 485
 14
 
-SLIDER
-10
-45
-205
-78
-num-nodes
-num-nodes
-2
-100
-100.0
-1
-1
-NIL
-HORIZONTAL
-
 BUTTON
 10
-120
+145
 204
-153
+178
 redistribute actions
 redistribute-actions
 NIL
@@ -260,6 +242,21 @@ NIL
 NIL
 NIL
 0
+
+SLIDER
+15
+95
+187
+128
+q
+q
+0
+1
+0.4
+0.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
