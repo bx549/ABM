@@ -4,6 +4,8 @@
 
 ; some of the ideas in the code are taken from the Language Change model
 
+globals [ mouse-was-down? ]
+
 breed [nodes node]
 
 nodes-own [
@@ -36,13 +38,10 @@ to make-nodes
   ]
 end
 
-; initialize some individuals to start with action 1
+; initialize nodes to start with action 0
 to distribute-actions
-  ask nodes [ set action 0 ]
-  ; ask two neighbor nodes to switch to 1
-  ask (turtle-set node 3 node 4)
-    [ set action 1 ]
   ask nodes [
+    set action 0
     set orig-action action
     update-color
   ]
@@ -60,10 +59,11 @@ to create-network
 end
 
 to update-color
+  ; nodes that take action 0 are black, action 1 are white
   set color ifelse-value action = 0 [black] [white]
 end
 
-to reset-nodes
+to reset-actions  ; reset each node's action to it's original action
   clear-all-plots
   ask nodes [
     set action orig-action
@@ -72,7 +72,7 @@ to reset-nodes
   reset-ticks
 end
 
-to redistribute-actions
+to redistribute-actions ; completely redistribute actions to all nodes
   clear-all-plots
   distribute-actions
   reset-ticks
@@ -92,8 +92,8 @@ to check-neighbors
 end
 
 to take-action
-  ; an agent will take the action that maxmizes the sum of his payoffs
-  ; from her interactions with each of her neighbors.
+  ; an agent will take the action that maxmizes the sum of her payoffs
+  ; from the interactions with each of her neighbors.
   ; action 1 is a best response to the actions of her neighbors if
   ; at least proportion q of her neighbors choose action 1.
   let num-neighbors count link-neighbors
@@ -102,7 +102,20 @@ end
 
 to action-dbg  ; debugging, show actions of all nodes
   foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] nodes [ i ->
-    ask i [ show action ]
+    ask i [
+      let num-neighbors count link-neighbors
+      show (action-1-sum / num-neighbors)
+    ]
+  ]
+end
+
+to select-nodes ; use the mouse to select which nodes take action 1
+  if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set action 1
+      update-color
+      display ; update the display
+    ]
   ]
 end
 @#$#@#$#@
@@ -135,9 +148,9 @@ ticks
 
 PLOT
 5
+255
 365
-365
-485
+375
 Mean action value in the network
 time
 action
@@ -189,9 +202,9 @@ BUTTON
 10
 185
 203
-219
-reset states
-reset-nodes
+218
+reset actions
+reset-actions
 NIL
 1
 T
@@ -201,13 +214,6 @@ NIL
 NIL
 NIL
 0
-
-OUTPUT
-375
-415
-750
-485
-14
 
 BUTTON
 10
@@ -257,6 +263,23 @@ q
 1
 NIL
 HORIZONTAL
+
+BUTTON
+225
+100
+357
+133
+select nodes
+select-nodes
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
