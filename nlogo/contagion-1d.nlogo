@@ -1,4 +1,4 @@
-; a model for contagion in 2 dimensions
+; a model for contagion in 1 dimension
 ; this model corresponds to the following article:
 ; Stephen Morris, Contagion, Review of Economic Studies, Vol 67, 2000
 
