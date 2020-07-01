@@ -1,11 +1,10 @@
-; a model for contagion in 1 dimension
+; a model for substitution in 1 dimension
 ; some of the ideas are taken from the Language Change model
 
 globals [q]
 
-breed [nodes node]
 
-nodes-own [
+turtles-own [
   action        ; action (either 0 or 1)
   orig-action   ; each person's initially assigned action
 ]
@@ -15,31 +14,31 @@ to setup
   set q 0.1
   set-default-shape turtles "circle"
   ask patches [ set pcolor cyan ]
-  make-nodes
+  make-turtles
   distribute-actions
-  ;create-network
+  create-network
   reset-ticks
 end
 
-; create the nodes in 1-dimensional lattice
-to make-nodes
-  create-nodes 10 [ set color black ]
-  repeat 500 [layout]
-  ask nodes [ setxy 0.95 * xcor 0.95 * ycor ]
+; create the turtles in 1-dimensional lattice
+to make-turtles
+  create-turtles 11 [ set color black ]
+  repeat 50 [layout]
+  ask turtles [ setxy 0.95 * xcor 0.95 * ycor ]
 end
 
 to layout
-  layout-spring nodes links 0.5 2 1
+  layout-spring turtles links 0.5 2 1
 end
 
 
 ; initialize some individuals to start with action 1
 to distribute-actions
-  ask nodes [ set action 0 ]
+  ask turtles [ set action 0 ]
   ; ask two neighbor nodes to switch to 1
-  ask (turtle-set node 3 node 4)
+  ask (turtle-set turtle 3 turtle 4)
     [ set action 1 ]
-  ask nodes [
+  ask turtles [
     set orig-action action
     update-color
   ]
@@ -47,9 +46,33 @@ end
 
 ;; create the links in the 1-dimensional lattice
 to create-network
-      let nbr one-of nodes-at 5 0   ; identify neighbor to the right, should be only one
-      if (nbr != nobody)
-      [ create-link-with nbr [ set color white ] ]
+  ask turtle 0 [
+    create-link-with turtle 1
+    create-link-with turtle 4]
+  ask turtle 1 [
+    create-link-with turtle 0
+    create-link-with turtle 4]
+  ask turtle 2 [create-link-with turtle 4]
+  ask turtle 3 [create-link-with turtle 4]
+  ask turtle 4 [
+    create-link-with turtle 0
+    create-link-with turtle 1
+    create-link-with turtle 2
+    create-link-with turtle 3
+    create-link-with turtle 5
+    create-link-with turtle 6]
+  ask turtle 5 [
+    create-link-with turtle 4
+    create-link-with turtle 7]
+  ask turtle 6 [
+    create-link-with turtle 4
+    create-link-with turtle 7]
+  ask turtle 7 [
+    create-link-with turtle 5
+    create-link-with turtle 6]
+  ask turtle 8 [create-link-with turtle 6]
+  ask turtle 9 [create-link-with turtle 6]
+  ask turtle 10 [create-link-with turtle 6]
 end
 
 to update-color
@@ -60,7 +83,7 @@ end
 
 to reset-nodes
   clear-all-plots
-  ask nodes [
+  ask turtles [
     set action orig-action
     update-color
   ]
@@ -74,15 +97,15 @@ to redistribute-actions
 end
 
 to go
-  ask nodes [ play-game ]
-  ask nodes [ update-color ]
+  ask turtles [ play-game ]
+  ask turtles [ update-color ]
   tick
   debg-actions
 end
 
 to debg-actions
    ; debugging, show actions of all nodes
-  foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] nodes [ i ->
+  foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] turtles [ i ->
     ask i [ show action ]
   ]
 end
@@ -175,29 +198,11 @@ NIL
 NIL
 1
 
-PLOT
-27
-64
-227
-214
-Mean state of language users in network
-Time
-State
-0.0
-100.0
-0.0
-1.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -10899396 true "" "plot mean [state] of nodes"
-
 BUTTON
-6
-241
-109
-274
+17
+80
+120
+113
 reset states
 reset-nodes
 NIL
@@ -211,10 +216,10 @@ NIL
 1
 
 SLIDER
-32
-336
-204
-369
+18
+175
+190
+208
 num-nodes
 num-nodes
 0
@@ -226,10 +231,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-5
-287
-157
-320
+16
+126
+168
+159
 redistribute actions
 redistribute-actions
 NIL
