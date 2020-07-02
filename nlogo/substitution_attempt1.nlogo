@@ -1,28 +1,32 @@
 ; a model for substitution in 1 dimension
 ; some of the ideas are taken from the Language Change model
 
-globals [q]
-
+globals [
+  selected]
 
 turtles-own [
   action        ; action (either 0 or 1)
   orig-action   ; each person's initially assigned action
+  action-1-sum
 ]
 
 to setup
   clear-all
-  set q 0.1
   set-default-shape turtles "circle"
   ask patches [ set pcolor cyan ]
+  set selected nobody
   make-turtles
   distribute-actions
   create-network
+  choose-turtle
   reset-ticks
 end
 
 ; create the turtles in 1-dimensional lattice
 to make-turtles
-  create-turtles 11 [ set color black ]
+  create-turtles 11 [
+    set color black
+    set action 0 ]
   repeat 50 [layout]
   ask turtles [ setxy 0.95 * xcor 0.95 * ycor ]
 end
@@ -36,13 +40,18 @@ end
 to distribute-actions
   ask turtles [ set action 0 ]
   ; ask two neighbor nodes to switch to 1
-  ask (turtle-set turtle 3 turtle 4)
+  ask (turtle-set turtle 3 turtle 4 turtle 6)
     [ set action 1 ]
   ask turtles [
     set orig-action action
     update-color
   ]
 end
+
+to update-color
+  set color ifelse-value action = 0 [black] [white]
+end
+
 
 ;; create the links in the 1-dimensional lattice
 to create-network
@@ -75,11 +84,6 @@ to create-network
   ask turtle 10 [create-link-with turtle 6]
 end
 
-to update-color
-  ifelse action = 0
-  [ set color black ]
-  [ set color white ]
-end
 
 to reset-nodes
   clear-all-plots
@@ -97,7 +101,8 @@ to redistribute-actions
 end
 
 to go
-  ask turtles [ play-game ]
+  ask turtles [check-neighbors]
+  ask turtles [ take-action ]
   ask turtles [ update-color ]
   tick
   debg-actions
@@ -110,15 +115,56 @@ to debg-actions
   ]
 end
 
-to play-game
-  let action-1-sum sum [action] of link-neighbors
-  ifelse action-1-sum >= 1 [
-    ifelse q < 0.5
-      [ set action 1 ]
-      [ set action 0 ]
-  ]
-  [ set action 0 ]
+to check-neighbors
+  set action-1-sum sum [action] of link-neighbors
 end
+
+to take-action
+  let num-neighbors count link-neighbors
+  set action ifelse-value (action-1-sum / num-neighbors <= c) [1] [0]
+end
+
+
+
+to choose-turtle
+ifelse mouse-down? [
+    handle-select-and-drag
+  ][
+    set selected nobody
+    reset-perspective
+  ]
+  display ; update the display
+end
+
+to handle-select-and-drag
+  ; if no turtle is selected
+  ifelse selected = nobody  [
+    ; pick the closet turtle
+    set selected min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+    ; check whether or not it's close enough
+    ifelse [distancexy mouse-xcor mouse-ycor] of selected > 1 [
+      set selected nobody ; if not, don't select it
+    ][
+      watch selected ; if it is, go ahead and `watch` it
+    ]
+  ][
+    ; if a turtle is selected, move it to the mouse
+    ask selected [ setxy mouse-xcor mouse-ycor ]
+  ]
+end
+
+
+to play-game
+  ;let action-1-sum sum [action] of link-neighbors
+  ;ifelse action-1-sum >= 1 [
+    ;ifelse q < 0.5
+      ;[ set action 1 ]
+     ; [ set action 0 ]
+ ; ]
+  ;[ set action 0 ]
+end
+
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 256
@@ -199,10 +245,10 @@ NIL
 1
 
 BUTTON
-17
-80
-120
-113
+54
+85
+157
+118
 reset states
 reset-nodes
 NIL
@@ -224,16 +270,16 @@ num-nodes
 num-nodes
 0
 50
-9.0
+11.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-16
+28
 126
-168
+180
 159
 redistribute actions
 redistribute-actions
@@ -246,6 +292,32 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+49
+225
+150
+270
+selected turtle
+selected
+3
+1
+11
+
+SLIDER
+19
+282
+191
+315
+c
+c
+0.1
+1
+0.2
+0.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
