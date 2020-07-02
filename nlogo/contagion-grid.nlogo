@@ -14,15 +14,19 @@ to setup
   clear-all
   set-default-shape nodes "circle"
   ask patches [ set pcolor gray ]
-  make-nodes
+  ifelse dimension = 1 [
+    make-nodes-1
+  ] [
+    make-nodes-2
+  ]
   distribute-actions
   create-network
   reset-ticks
   ;action-dbg
 end
 
-; create the nodes in 1-dimensional lattice
-to make-nodes
+
+to make-nodes-1 ; create the nodes for a 1-dimensional lattice
   foreach (range -40 41 5) [ i ->
     create-nodes 1 [
       set xcor i
@@ -34,8 +38,21 @@ to make-nodes
   ]
 end
 
-; initialize nodes to start with action 0
-to distribute-actions
+to make-nodes-2 ; create the nodes for a 2-dimensional lattice
+  foreach (range -40 41 5) [ i ->
+    foreach (range -40 41 5) [ j ->
+      create-nodes 1 [
+        set xcor i
+        set ycor j
+        set size 2
+        set action 0
+        set color black
+      ]
+    ]
+  ]
+end
+
+to distribute-actions ; initialize nodes to start with action 0
   ask nodes [
     set action 0
     set orig-action action
@@ -43,14 +60,12 @@ to distribute-actions
   ]
 end
 
-;; create the links in the 1-dimensional lattice
-to create-network
-  foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] nodes [ i ->
-    ask i [
-      let nbr one-of nodes-at 5 0   ; identify neighbor to the right, should be only one
-      if (nbr != nobody)
-      [ create-link-with nbr [ set color white ] ]
-    ]
+to create-network ; create links to neighbors
+  ask turtles [
+    let nbrs other turtles in-radius 5
+    ; other omits the turtle itself
+    create-links-with nbrs [ set color white ]
+    ; only one undirected link between any two turtles is created
   ]
 end
 
@@ -161,10 +176,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [action] of nodes"
 
 BUTTON
-10
-10
-105
-43
+220
+120
+315
+153
 setup
 setup
 NIL
@@ -178,10 +193,10 @@ NIL
 1
 
 BUTTON
-226
-10
-366
-44
+220
+160
+360
+194
 NIL
 go
 T
@@ -196,9 +211,9 @@ NIL
 
 BUTTON
 10
-185
+200
 203
-218
+233
 reset actions
 reset-actions
 NIL
@@ -213,9 +228,9 @@ NIL
 
 BUTTON
 10
-145
+160
 204
-178
+193
 redistribute actions
 redistribute-actions
 NIL
@@ -229,10 +244,10 @@ NIL
 0
 
 BUTTON
-226
-45
-366
-79
+220
+200
+360
+234
 go once
 go
 NIL
@@ -246,25 +261,25 @@ NIL
 0
 
 SLIDER
+190
 15
-95
-187
-128
+362
+48
 q
 q
 0
 1
-0.4
+0.5
 0.1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-225
-100
-357
-133
+10
+120
+142
+153
 select nodes
 select-nodes
 T
@@ -277,46 +292,39 @@ NIL
 NIL
 1
 
+CHOOSER
+190
+55
+328
+100
+dimension
+dimension
+1 2
+0
+
 @#$#@#$#@
 ## WHAT IS IT?
 
-This model is an implementation of best-response decision-making when players are arranged on a line (i.e. a 1-dimensional lattice). Each player can choose one of possible actions. Each player attempt to coordinate her action with that of hers neighbors in order to maximize her own payoff. The purpose of the model is to understand the conditions under which all players end up taking the same action.
+This model is an implementation of best-response decision-making when players are arranged on either a line or a grid. Each agent can choose one of two possible actions:
+action 0 or action 1. Each agent will attempt to maximize her own payoff by to coordinating her action with that of her neighbors. The purpose of the model is to understand the conditions under which all agents end up taking action 1 (contagion).
 
 ## HOW IT WORKS
 
-The networks in this model are constructed through the process of "preferential attachment" in which individuals enter the network one by one, and prefer to connect to those language users who already have many connections. This leads to the emergence of a few "hubs", or language users who are very well connected; most other language users have very few connections.
+Agents play a coordination game with their neighbors. When two neighbors each take action 0, the payoff to each is q. When two neighbors take action 1, the payoff to each is 1-q. The payoff for miscoordination is zero. Before taking an action, agents check to see how many of neighbors are taking action 1. Each agent then chooses the action (either 0 or 1) that will maximize her own total payoff. Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
 
-There are three different options to control how language users listen and learn from their neighbors, listed in the UPDATE-ALGORITHM chooser. For two of these options, INDIVIDUAL and THRESHOLD, language users can only access one grammar at a time. Those that can only access grammar 1 are white in color, and those that can access only grammar 0 are black. For the third option, REWARD, each grammar is associated with a weight, which determines the language user's probability of accessing that grammar. Because there are only two grammars in competition here, the weights are represented with a single value - the weight of grammar 1. The color of the nodes reflect this probability; the larger the weight of grammar 1, the lighter the node.
+Contagion (when all agents end up taking action 1) only occurs under certain conditions. For example, for agents arranged along a line (1-dimension), contagion can only occur when q <= 1/2. In 1-dimension the threshold of 1/2 is called the contagion threshold, the largest value of q for which contagion is possible. Contagion is also possible only when certain agent sets are intitially taking action 1. In 1 dimension, contagion will occur when two neighboring agents initially take action 1 (and q <= 1/2).
 
-- INDIVIDUAL: Language users choose one of their neighbors randomly, and adopt that neighbor's grammar.
-
-- THRESHOLD: Language users adopt grammar 1 if some proportion of their neighbors is already using grammar 1. This proportion is set with the THRESHOLD-VAL slider. For example, if THRESHOLD-VAL is 0.30, then an individual will adopt grammar 1 if at least 30% of his neighbors have grammar 1.
-
-- REWARD: Language users update their probability of using one grammar or the other. In this algorithm, if an individual hears an utterance from grammar 1, the individual's weight of grammar 1 is increased, and they will be more likely to use that grammar in the next iteration. Similarly, hearing an utterance from grammar 0 increases the likelihood of using grammar 0 in the next iteration.
+The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
 
 ## HOW TO USE IT
 
-The NUM-NODES slider determines the number of nodes (or individuals) to be included in the network population. PERCENT-GRAMMAR-1 determines the proportion of these language learners who will be initialized to use grammar 1. The remaining nodes will be initialized to use grammar 0.
+The q slider sets the payoff when agents coordinate on action 0. The DIMENSION chooser set the grid to be either 1 or 2 dimensions. 
 
-Press SETUP-EVERYTHING to generate a new network based on NUM-NODES and PERCENT-GRAMMAR-1.
+The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action 1 (at least initially).
 
-Press GO ONCE to allow all language users to "speak" and "listen" only once, according to the algorithm in the UPDATE-ALGORITHM dropdown menu (see the above section for more about these options). Press GO for the simulation to run continuously; pressing GO again will halt the simulation.
+SETUP resets all agents to take action 0.
 
-Press LAYOUT to move the nodes around so that the structure of the network easier to see.
-
-When the HIGHLIGHT button is pressed, rolling over a node in the network will highlight the nodes to which it is connected. Additionally, the node's initial and current grammar state will be displayed in the output area.
-
-Press REDISTRIBUTE-GRAMMARS to reassign grammars to all language users, under the same initial condition. For example, if 20% of the nodes were initialized with grammar 1, pressing REDISTRIBUTE-GRAMMARS will assign grammar 1 to a new sample of 20% of the population.
-
-Press RESET-STATES to reinitialize all language users to their original grammars. This allows you to run the model multiple times without generating a new network structure.
-
-The SINK-STATE-1? switch applies only for the INDIVIDUAL and THRESHOLD updating algorithms. If on, once an individual adopts grammar 1, then he can never go back to grammar 0.
-
-The LOGISTIC? switch applies only for the REWARD updating algorithm. If on, an individual's probability of using one of the grammars is pushed to the extremes (closer to 0% or 100%), based on the output of the logistic function. For more details, see https://en.wikipedia.org/wiki/Logistic_function.
-
-The ALPHA slider also applies only for the REWARD updating algorithm, and only when LOGISTIC? is turned on. ALPHA represents a bias in favor of grammar 1. Probabilities are pushed to the extremes, and shifted toward selecting grammar 1. The larger the value of ALPHA, the more likely a language user will speak using grammar 1.
-
-The plot "Mean state of language users in the network" calculates the average weight of grammar 1 for all nodes in the network, at each iteration.
+When GO ONCE is pressed, agents play the coordination game one time. Pressing GO causes the agents to play the game repeatedly (at each tick).
 
 ## THINGS TO NOTICE
 
@@ -330,7 +338,7 @@ The plot "Mean state of language users in the network" calculates the average we
 
 ## NETLOGO FEATURES
 
-Networks are represented using turtles (nodes) and links. The user is able to use the mouse to select nodes to take action 1.
+Networks are represented using turtles (nodes) and links. The user is able to use the mouse to select the agents that initially take action 1.
 
 ## RELATED MODELS
 
@@ -360,7 +368,6 @@ Copyright 2020 Darin England
 ![CC BY-NC-SA 3.0](http://ccl.northwestern.edu/images/creativecommons/byncsa.png)
 
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.  To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
-
 @#$#@#$#@
 default
 true
