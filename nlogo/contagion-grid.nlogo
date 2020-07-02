@@ -1,4 +1,4 @@
-; a model for contagion in 1 dimension
+; a model for contagion in 1 or 2 dimensions
 ; this model corresponds to the following article:
 ; Stephen Morris, Contagion, Review of Economic Studies, Vol 67, 2000
 
@@ -177,9 +177,9 @@ PENS
 
 BUTTON
 220
-120
+105
 315
-153
+138
 setup
 setup
 NIL
@@ -194,9 +194,9 @@ NIL
 
 BUTTON
 220
-160
+145
 360
-194
+179
 NIL
 go
 T
@@ -211,9 +211,9 @@ NIL
 
 BUTTON
 10
-200
+185
 203
-233
+218
 reset actions
 reset-actions
 NIL
@@ -228,9 +228,9 @@ NIL
 
 BUTTON
 10
-160
+145
 204
-193
+178
 redistribute actions
 redistribute-actions
 NIL
@@ -245,9 +245,9 @@ NIL
 
 BUTTON
 220
-200
+185
 360
-234
+219
 go once
 go
 NIL
@@ -261,10 +261,10 @@ NIL
 0
 
 SLIDER
-190
-15
-362
-48
+10
+10
+182
+43
 q
 q
 0
@@ -277,9 +277,9 @@ HORIZONTAL
 
 BUTTON
 10
-120
+105
 142
-153
+138
 select nodes
 select-nodes
 T
@@ -293,14 +293,14 @@ NIL
 1
 
 CHOOSER
-190
-55
-328
-100
+10
+50
+148
+95
 dimension
 dimension
 1 2
-0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
