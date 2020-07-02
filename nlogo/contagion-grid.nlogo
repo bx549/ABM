@@ -74,21 +74,6 @@ to update-color
   set color ifelse-value action = 0 [black] [white]
 end
 
-to reset-actions  ; reset each node's action to it's original action
-  clear-all-plots
-  ask nodes [
-    set action orig-action
-    update-color
-  ]
-  reset-ticks
-end
-
-to redistribute-actions ; completely redistribute actions to all nodes
-  clear-all-plots
-  distribute-actions
-  reset-ticks
-end
-
 to go
   ; in the ask commands below the order of node exection is random, hence the separate steps
   ask nodes [ check-neighbors ] ; first all nodes note the actions of their neighbors (or form beliefs)
@@ -176,10 +161,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [action] of nodes"
 
 BUTTON
-220
-105
-315
-138
+215
+15
+310
+48
 setup
 setup
 NIL
@@ -193,10 +178,10 @@ NIL
 1
 
 BUTTON
-220
-145
-360
-179
+215
+55
+355
+89
 NIL
 go
 T
@@ -210,44 +195,10 @@ NIL
 0
 
 BUTTON
-10
-185
-203
-218
-reset actions
-reset-actions
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-0
-
-BUTTON
-10
-145
-204
-178
-redistribute actions
-redistribute-actions
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-0
-
-BUTTON
-220
-185
-360
-219
+215
+95
+355
+129
 go once
 go
 NIL
