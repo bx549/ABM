@@ -19,6 +19,8 @@ to setup
   distribute-actions
   create-network
   select-nodes
+  delete-nodes
+  add-nodes
   reset-ticks
 end
 
@@ -115,6 +117,28 @@ to select-nodes ; use the mouse to select which nodes take action 1
   ]
   set selected nobody
 end
+
+
+to add-nodes
+  if mouse-down? [
+      create-turtles 1 [
+        set color black
+        set action 0
+        setxy mouse-xcor mouse-ycor
+    ]
+      display ; update the display
+    ]
+end
+
+to delete-nodes
+  if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      die
+      display ; update the display
+    ]
+  ]
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 256
@@ -220,7 +244,7 @@ num-nodes
 num-nodes
 3
 15
-13.0
+6.0
 1
 1
 NIL
@@ -240,10 +264,44 @@ selected
 BUTTON
 19
 132
-219
+235
 165
-select nodes (with action 1)
+select nodes (to take action 1)
 select-nodes
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+11
+300
+111
+333
+add node
+add-nodes
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+119
+301
+232
+334
+delete node
+delete-nodes
 T
 1
 T
@@ -261,7 +319,14 @@ This model is an implementation of "best-shot" public goods game when players ar
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+Agents play a substitution game with their neighbors. Before taking an action, agents check to see if any of their neighbors are taking action 1. 
+
+Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
+
+Equilibrium only exists under certain conditions.
+
+The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
+
 
 ## HOW TO USE IT
 
@@ -273,23 +338,21 @@ When GO ONCE is pressed, agents play the coordination game one time. Pressing GO
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+If an equilibrium occurs, the nodes that take action 1 form a maximal independent set.
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+Try creating different types of networks, e.g. a star network, a complete network, a circle, a line, a bipartite network, ...
 
 ## EXTENDING THE MODEL
 
 (suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
 
+
 ## NETLOGO FEATURES
 
 Networks are represented using turtles and links. The user is able to use the mouse to select the agents that initially take action 1.
 
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
 
