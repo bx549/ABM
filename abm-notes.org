@@ -50,6 +50,30 @@ algorithm.
 Separately, Demonstrate the idea that players with more connections
 receive better payoffs, and perhaps receive payoffs more quickly?
 
+** Jul 9, 2020
+after some initial experimentation and much thought:
+- create a simple model for a game of compliments (coordination game)
+- create a simple model for a game of substitutes (anti-coordination game)
+in both of the above games, put up an initial small network, but allow
+the user to edit the network (add/remove nodes and links).
+
+- finish the contagion model
+
+after creating the simple models, change the agents' decision-making
+process from deductive (rational) to inductive. similar to the el
+farol model, agents keep a working set of hypotheses/strategies. they
+use the best-peforming strategies and discard the others. in the el
+farol model, the task is to predict attendance at the bar. in the game
+of compliments, the task is to predict the actions of the neighbors.
+of interest is whether (and how quickly) an equilibrium is
+reached. also, if there exist multiple equilibria, which one(s)
+is(are) obtained?
+
+for a concise description of deductive vs inductive decision-making
+and for a description of the el farol model, see the article
+"inductive reasoning and bounded rationality" by brian arthur.
+
+
 ** social distancing policies/beliefs and covid19
 based on SEIR/SIR compartmental model. evolution of SEIR/SIR
 populations over time are usually modeled with a set of differential
