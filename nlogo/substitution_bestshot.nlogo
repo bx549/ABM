@@ -13,7 +13,7 @@ turtles-own [
 to setup
   clear-all
   set-default-shape turtles "circle"
-  ask patches [ set pcolor cyan ]
+  ask patches [ set pcolor cyan + 1 ]
   set selected nobody
   make-turtles
   distribute-actions
@@ -84,7 +84,7 @@ to go
   ask turtles [ take-action ]
   ask turtles [ update-color ]
   tick
-  debg-actions
+  ;debg-actions
 end
 
 to debg-actions
@@ -105,17 +105,16 @@ end
 
 
 to select-nodes ; use the mouse to select which nodes take action 1
-  set selected nobody
+  set selected min-one-of turtles [distancexy mouse-xcor mouse-ycor]
   if mouse-down? [
     ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set selected min-one-of turtles [distancexy mouse-xcor mouse-ycor]
       set action 1
       update-color
       display ; update the display
     ]
   ]
+  set selected nobody
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 256
@@ -196,10 +195,10 @@ NIL
 1
 
 BUTTON
-54
-85
-157
-118
+64
+231
+167
+264
 reset states
 reset-nodes
 NIL
@@ -213,42 +212,25 @@ NIL
 1
 
 SLIDER
-18
-175
-190
-208
+31
+78
+203
+111
 num-nodes
 num-nodes
 3
 15
-10.0
+13.0
 1
 1
 NIL
 HORIZONTAL
 
-BUTTON
-28
-126
-180
-159
-redistribute actions
-redistribute-actions
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
-62
-285
-163
-330
+69
+175
+170
+220
 selected turtle
 selected
 3
@@ -256,10 +238,10 @@ selected
 11
 
 BUTTON
-12
-242
-212
-275
+19
+132
+219
+165
 select nodes (with action 1)
 select-nodes
 T
