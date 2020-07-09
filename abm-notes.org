@@ -53,7 +53,8 @@ receive better payoffs, and perhaps receive payoffs more quickly?
 ** Jul 9, 2020
 after some initial experimentation and much thought:
 - create a simple model for a game of compliments (coordination game)
-- create a simple model for a game of substitutes (anti-coordination game)
+- create a simple model for a game of substitutes 
+- create a simple model for an anti-coordination game
 in both of the above games, put up an initial small network, but allow
 the user to edit the network (add/remove nodes and links).
 
