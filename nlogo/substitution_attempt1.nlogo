@@ -18,7 +18,7 @@ to setup
   make-turtles
   distribute-actions
   create-network
-  choose-turtle
+  select-nodes
   reset-ticks
 end
 
@@ -40,8 +40,8 @@ end
 to distribute-actions
   ask turtles [ set action 0 ]
   ; ask two neighbor nodes to switch to 1
-  ask (turtle-set turtle 3 turtle 4 turtle 6)
-    [ set action 1 ]
+  ;ask (turtle-set turtle 6 turtle 7 turtle 5)
+    ;[ set action 1 ]
   ask turtles [
     set orig-action action
     update-color
@@ -121,10 +121,20 @@ end
 
 to take-action
   let num-neighbors count link-neighbors
-  set action ifelse-value (action-1-sum / num-neighbors <= c) [1] [0]
+  set action ifelse-value (action-1-sum >= 1) [0] [1]
 end
 
 
+
+to select-nodes ; use the mouse to select which nodes take action 1
+  if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set action 1
+      update-color
+      display ; update the display
+    ]
+  ]
+end
 
 to choose-turtle
 ifelse mouse-down? [
@@ -163,7 +173,6 @@ to play-game
  ; ]
   ;[ set action 0 ]
 end
-
 
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -304,20 +313,22 @@ selected
 1
 11
 
-SLIDER
-19
-282
-191
-315
-c
-c
-0.1
+BUTTON
+20
+292
+210
+325
+select nodes with action 1
+select-nodes
+T
 1
-0.2
-0.1
-1
+T
+OBSERVER
 NIL
-HORIZONTAL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
