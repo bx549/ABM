@@ -126,8 +126,9 @@ to add-nodes
         set action 0
         setxy mouse-xcor mouse-ycor
     ]
-      display ; update the display
+    stop
     ]
+  display ; update the display
 end
 
 to delete-nodes
@@ -138,7 +139,6 @@ to delete-nodes
     ]
   ]
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 256
@@ -244,7 +244,7 @@ num-nodes
 num-nodes
 3
 15
-6.0
+10.0
 1
 1
 NIL
