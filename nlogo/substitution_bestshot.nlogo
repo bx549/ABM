@@ -2,7 +2,9 @@
 ; some of the ideas are taken from the Language Change model
 
 globals [
-  selected]
+  selected
+  turtle1
+  turtle2]
 
 turtles-own [
   action        ; action (either 0 or 1)
@@ -21,6 +23,7 @@ to setup
   select-nodes
   delete-nodes
   add-nodes
+  ;delete-link
   reset-ticks
 end
 
@@ -137,7 +140,29 @@ to delete-nodes
       die
       display ; update the display
     ]
+    stop
   ]
+end
+
+to delete-link
+  user-message (word "Select two nodes to delete the link between.")
+   if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+      ;stop
+    ]
+  ]
+   if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+      ;stop
+    ]
+  ]
+    ;ask link with [turtle1 turtle2][
+      ;die
+     ; display ; update the display
+  ;]
+    stop
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -302,6 +327,23 @@ BUTTON
 334
 delete node
 delete-nodes
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+129
+349
+223
+382
+delete link
+delete-link
 T
 1
 T
