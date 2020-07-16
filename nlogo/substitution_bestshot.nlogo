@@ -24,6 +24,7 @@ to setup
   delete-nodes
   add-nodes
   ;delete-link
+  ;add-link
   reset-ticks
 end
 
@@ -163,6 +164,23 @@ to delete-link
      ; display ; update the display
   ;]
     stop
+end
+
+to add-link
+  user-message (word "Select two nodes to add the link between.")
+   if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+      ;stop
+    ]
+  ]
+   if mouse-down? [
+    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+      ;stop
+    ]
+  ]
+  ask turtle1 [create-link-with turtle2]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -344,6 +362,23 @@ BUTTON
 382
 delete link
 delete-link
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+20
+350
+100
+383
+add link
+add-link
 T
 1
 T
