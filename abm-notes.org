@@ -58,7 +58,54 @@ after some initial experimentation and much thought:
 in both of the above games, put up an initial small network, but allow
 the user to edit the network (add/remove nodes and links).
 
-- finish the contagion model
+** anti-coordination game
+Agents play the bilateral game with each neighbor. Agents receive the
+sum of the payoffs. The game is
+      A     B
+   -----------
+A | pi_AA pi_AB
+B | pi_BA pi_BB
+
+The magnitude of the payoffs matter, but the basic rule for
+anti-coordination is pi_BA > pi_AA and pi_AB > pi_BB. Then, the
+strategies {A,B} and {B,A} are both pure-strategy Nash
+equilibria. There is also a mixed-strategy equilibrium, but let's not
+worry about that right now. A mixed strategy means that an agent will
+play A with some probability. So, we just focus on pure strategies
+where an agent chooses either A or B. Also, whatever strategy/action
+is selected, A or B, the agent plays that strategy with all of her
+neighbors. Note here that strategy means the same thing as "action".
+
+For now how about if we use the following
+      A     B
+   -----------
+A |   1     4
+B |   2     3
+
+As far as implementing the game in Netlogo, I would loop through all
+agents and have them choose the (pure) action A or B that yields the
+highest payoff. If action A ties with action B, then choose one at
+random. Then loop through all agents again because some agents will
+change their strategy, repeat until no agent wants to switch to a
+different strategy ... then we have an equilibrium.
+
+After that, and if time allows, allow the user to choose values for
+pi_AA, pi_AB, pi_BA, and pi_BB. For example, the following payoff
+matrix will yield very different equilibrium (for the same network).
+      A     B
+   -----------
+A |   1    21
+B |   2     3
+
+With the preceding in place we will be able to "see" some results from
+Bramoulle's artcile. After that, if time allows, let's look at the
+frustration function.
+
+I am happy to help with any coding, but you are doing a great
+job. Thanks for keeping after this (even without much structure in
+place.)
+
+** finish the contagion model
 
 after creating the simple models, change the agents' decision-making
 process from deductive (rational) to inductive. similar to the el
@@ -73,7 +120,6 @@ is(are) obtained?
 for a concise description of deductive vs inductive decision-making
 and for a description of the el farol model, see the article
 "inductive reasoning and bounded rationality" by brian arthur.
-
 
 ** social distancing policies/beliefs and covid19
 based on SEIR/SIR compartmental model. evolution of SEIR/SIR
