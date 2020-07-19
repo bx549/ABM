@@ -4,12 +4,14 @@
 globals [
   selected
   turtle1
-  turtle2]
+  turtle2
+  ]
 
 turtles-own [
   action        ; action (either 0 or 1)
   orig-action   ; each person's initially assigned action
   action-1-sum
+  action-0-sum
 ]
 
 to setup
@@ -24,7 +26,6 @@ to setup
   delete-nodes
   add-nodes
   ;delete-link
-  ;add-link
   reset-ticks
 end
 
@@ -106,7 +107,8 @@ end
 
 to take-action
   let num-neighbors count link-neighbors
-  set action ifelse-value (action-1-sum >= 1) [0] [1]
+  set action-0-sum (num-neighbors - action-1-sum)
+  set action ifelse-value (action-1-sum / num-neighbors >= action-0-sum / num-neighbors) [0] [1]
 end
 
 
@@ -164,23 +166,6 @@ to delete-link
      ; display ; update the display
   ;]
     stop
-end
-
-to add-link
-  user-message (word "Select two nodes to add the link between.")
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-  ask turtle1 [create-link-with turtle2]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -285,9 +270,9 @@ SLIDER
 111
 num-nodes
 num-nodes
-3
+2
 15
-10.0
+6.0
 1
 1
 NIL
@@ -372,37 +357,12 @@ NIL
 NIL
 1
 
-BUTTON
-20
-350
-100
-383
-add link
-add-link
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 @#$#@#$#@
 ## WHAT IS IT?
 
-This model is an implementation of "best-shot" public goods game when players are arranged in a lattice. Each agent can choose one of two possible actions: action 0 or action 1. Each agent will attempt to maximize her own payoff by to coordinating her action with that of her neighbors. The purpose of the model is to understand the conditions under which an equilibrium exists.
+This model is an implementation of an anti-coordination game when players are arranged in a network. Each agent can choose one of two possible actions: action 0 or action 1. The purpose of the model is to understand the conditions under which an equilibrium exists.
 
 ## HOW IT WORKS
-
-Agents play a substitution game with their neighbors. Before taking an action, agents check to see if any of their neighbors are taking action 1. 
-
-Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
-
-Equilibrium only exists under certain conditions.
-
-The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
 
 
 ## HOW TO USE IT
@@ -415,11 +375,11 @@ When GO ONCE is pressed, agents play the coordination game one time. Pressing GO
 
 ## THINGS TO NOTICE
 
-If an equilibrium occurs, the nodes that take action 1 form a maximal independent set.
+Bipartite networks are the only networks on which agents can anti-coordinate with all of their neighbors.
 
 ## THINGS TO TRY
 
-Try creating different types of networks, e.g. a star network, a complete network, a circle, a line, a bipartite network, ...
+...
 
 ## EXTENDING THE MODEL
 
