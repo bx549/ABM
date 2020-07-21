@@ -332,10 +332,10 @@ NIL
 1
 
 BUTTON
-8
-430
-108
-463
+151
+301
+238
+334
 add node
 add-nodes
 T
@@ -349,10 +349,10 @@ NIL
 1
 
 BUTTON
-115
-430
-228
-463
+151
+345
+238
+378
 delete node
 delete-nodes
 T
@@ -366,10 +366,10 @@ NIL
 1
 
 BUTTON
-125
-478
-219
-511
+149
+389
+239
+422
 delete link
 delete-link
 T
@@ -383,10 +383,10 @@ NIL
 1
 
 INPUTBOX
-65
-281
-115
-341
+11
+299
+61
+359
 AA
 1.0
 1
@@ -394,10 +394,10 @@ AA
 Number
 
 INPUTBOX
-119
-281
-169
-341
+65
+299
+115
+359
 AB
 4.0
 1
@@ -405,10 +405,10 @@ AB
 Number
 
 INPUTBOX
-65
-348
-115
-408
+11
+366
+61
+426
 BA
 2.0
 1
@@ -416,15 +416,25 @@ BA
 Number
 
 INPUTBOX
-119
-348
-169
-408
+65
+366
+115
+426
 BB
 3.0
 1
 0
 Number
+
+TEXTBOX
+26
+282
+176
+300
+Payoff Matrix
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
