@@ -5,6 +5,11 @@ globals [
   selected
   turtle1
   turtle2
+  mylist
+  payoff1
+  payoff2
+  payoff3
+  payoff4
   ]
 
 turtles-own [
@@ -108,7 +113,17 @@ end
 to take-action
   let num-neighbors count link-neighbors
   set action-0-sum (num-neighbors - action-1-sum)
-  set action ifelse-value (action-1-sum / num-neighbors >= action-0-sum / num-neighbors) [0] [1]
+  set payoff1 (action-1-sum * AA)
+  set payoff2 (action-1-sum * BA)
+  set payoff3 (action-0-sum * AB)
+  set payoff4 (action-0-sum * BB)
+  set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
+  show mylist
+   if max mylist = payoff1 [set action 1]
+   if max mylist = payoff2 [set action 0]
+   if max mylist = payoff3 [set action 1]
+   if max mylist = payoff4 [set action 0]
+
 end
 
 
@@ -272,7 +287,7 @@ num-nodes
 num-nodes
 2
 15
-6.0
+5.0
 1
 1
 NIL
@@ -307,10 +322,10 @@ NIL
 1
 
 BUTTON
-11
-300
-111
-333
+8
+430
+108
+463
 add node
 add-nodes
 T
@@ -324,10 +339,10 @@ NIL
 1
 
 BUTTON
-119
-301
-232
-334
+115
+430
+228
+463
 delete node
 delete-nodes
 T
@@ -341,10 +356,10 @@ NIL
 1
 
 BUTTON
-129
-349
-223
-382
+125
+478
+219
+511
 delete link
 delete-link
 T
@@ -356,6 +371,50 @@ NIL
 NIL
 NIL
 1
+
+INPUTBOX
+65
+281
+115
+341
+AA
+1.0
+1
+0
+Number
+
+INPUTBOX
+119
+281
+169
+341
+AB
+4.0
+1
+0
+Number
+
+INPUTBOX
+65
+348
+115
+408
+BA
+2.0
+1
+0
+Number
+
+INPUTBOX
+119
+348
+169
+408
+BB
+3.0
+1
+0
+Number
 
 @#$#@#$#@
 ## WHAT IS IT?
