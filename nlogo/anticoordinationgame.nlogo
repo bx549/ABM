@@ -24,6 +24,7 @@ to setup
   set-default-shape turtles "circle"
   ask patches [ set pcolor cyan + 1 ]
   set selected nobody
+  check-payoffs
   make-turtles
   distribute-actions
   create-network
@@ -34,6 +35,12 @@ to setup
   reset-ticks
 end
 
+to check-payoffs
+  if BA < AA [
+    user-message (word "The value for BA must be greater than AA. Enter different values and click 'setup' again.")]
+  if AB < BB [
+    user-message (word "The value for AB must be greater than BB. Enter different values and click 'setup' again.")]
+end
 ; create the turtles in 1-dimensional lattice
 to make-turtles
   create-turtles num-nodes [
