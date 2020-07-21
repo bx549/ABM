@@ -118,12 +118,15 @@ to take-action
   set payoff3 (action-0-sum * AB)
   set payoff4 (action-0-sum * BB)
   set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
+  set mylist (sort mylist)
+  set mylist (reverse mylist)
   show mylist
+   if item 0 mylist = item 1 mylist [
+    set action random 2]
    if max mylist = payoff1 [set action 1]
    if max mylist = payoff2 [set action 0]
    if max mylist = payoff3 [set action 1]
    if max mylist = payoff4 [set action 0]
-
 end
 
 
