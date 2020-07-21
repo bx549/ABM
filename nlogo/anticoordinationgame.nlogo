@@ -171,27 +171,6 @@ to delete-nodes
     stop
   ]
 end
-
-to delete-link
-  user-message (word "Select two nodes to delete the link between.")
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-    ;ask link with [turtle1 turtle2][
-      ;die
-     ; display ; update the display
-  ;]
-    stop
-end
 @#$#@#$#@
 GRAPHICS-WINDOW
 256
@@ -333,9 +312,9 @@ NIL
 
 BUTTON
 151
-301
+322
 238
-334
+355
 add node
 add-nodes
 T
@@ -350,28 +329,11 @@ NIL
 
 BUTTON
 151
-345
+366
 238
-378
+399
 delete node
 delete-nodes
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-149
-389
-239
-422
-delete link
-delete-link
 T
 1
 T
