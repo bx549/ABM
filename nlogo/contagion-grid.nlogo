@@ -220,7 +220,7 @@ q
 q
 0
 1
-0.5
+0.4
 0.1
 1
 NIL
@@ -257,19 +257,29 @@ dimension
 ## WHAT IS IT?
 
 This model is an implementation of best-response decision-making when players are arranged on either a line or a grid. Each agent can choose one of two possible actions:
-action 0 or action 1. Each agent will attempt to maximize her own payoff by to coordinating her action with that of her neighbors. The purpose of the model is to understand the conditions under which all agents end up taking action 1 (contagion).
+action 0 or action 1. Each agent will attempt to maximize her own payoff by coordinating her action with the actions of her neighbors. The purpose of the model is to understand the conditions under which all agents end up taking action 1 (contagion).
 
 ## HOW IT WORKS
 
-Agents play a coordination game with their neighbors. When two neighbors each take action 0, the payoff to each is q. When two neighbors take action 1, the payoff to each is 1-q. The payoff for miscoordination is zero. Before taking an action, agents check to see how many of neighbors are taking action 1. Each agent then chooses the action (either 0 or 1) that will maximize her own total payoff. Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
+Agents play a coordination game with each neighbor. When two neighbors each take action 0, the payoff to each is q. When two neighbors take action 1, the payoff to each is 1-q. The payoff for miscoordination is zero. In other words, each pair of agents that are connect by an edge play the following two-person game.
 
-Contagion (when all agents end up taking action 1) only occurs under certain conditions. For example, for agents arranged along a line (1-dimension), contagion can only occur when q <= 1/2. In 1-dimension the threshold of 1/2 is called the contagion threshold, the largest value of q for which contagion is possible. Contagion is also possible only when certain agent sets are intitially taking action 1. In 1 dimension, contagion will occur when two neighboring agents initially take action 1 (and q <= 1/2).
+```
+     0        1
+  ------------------
+0 | q,q  |   0,0   |
+1 | 0,0  | 1-q,1-q |
+  ------------------
+```
+
+Before taking an action, agents check to see how many of neighbors are taking action 1. Each agent then chooses the action (either 0 or 1) that will maximize her own total payoff. Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
+
+Contagion (when all agents end up taking action 1) only occurs under certain conditions. For example, for agents arranged along a line (1-dimension), contagion can only occur when q <= 1/2. In 1-dimension the threshold of 1/2 is called the contagion threshold, the largest value of q for which contagion is possible (please see the article by Morris that is referenced below). Contagion is also possible only when certain agent sets are intitially taking action 1. In 1 dimension, contagion will occur when two neighboring agents initially take action 1 (and q <= 1/2).
 
 The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
 
 ## HOW TO USE IT
 
-The q slider sets the payoff when agents coordinate on action 0. The DIMENSION chooser set the grid to be either 1 or 2 dimensions. 
+The q slider sets the payoff when agents coordinate on action 0. The DIMENSION chooser sets the grid to be either 1 or 2 dimensions. 
 
 The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action 1 (at least initially).
 
@@ -279,12 +289,19 @@ When GO ONCE is pressed, agents play the coordination game one time. Pressing GO
 
 ## THINGS TO NOTICE
 
+Under certain starting conditions that actions of all agents stop changing after some number of rounds. This means that agents have no incentive to switch their action. In other words, an equilibirium has been found. Under other conditions, equilibrium does not occur. We note that in this model agents are always allowed to switch their action. This differs from much of the literature where once an agent switches from action 0 to action 1, she is not allowed to switch back to action 0.
 
 ## THINGS TO TRY
 
-
+Try to find conditions under which contagion occurs. In 1 dimension, contagion will occur when two neighboring agents initially take action 1 (and q <= 1/2). Are there other configurations of agents initially taking action 1 that will lead to contagion. What about 2 dimensions.
 
 ## EXTENDING THE MODEL
+
+For the 2 dimensional grid in this model, each agent has four neighbors. One could modify the grid so that the "diagonal" agents are also neighbors (each agent would have eight neighbors). 
+
+Try implementing the contagion model on a tree.
+
+Try implementing the contagion model on other types of networks.
 
 
 ## NETLOGO FEATURES
