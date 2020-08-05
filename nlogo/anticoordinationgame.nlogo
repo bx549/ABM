@@ -5,6 +5,11 @@ globals [
   selected
   turtle1
   turtle2
+  mylist
+  payoff1
+  payoff2
+  payoff3
+  payoff4
   ]
 
 turtles-own [
@@ -19,6 +24,7 @@ to setup
   set-default-shape turtles "circle"
   ask patches [ set pcolor cyan + 1 ]
   set selected nobody
+  check-payoffs
   make-turtles
   distribute-actions
   create-network
@@ -29,6 +35,12 @@ to setup
   reset-ticks
 end
 
+to check-payoffs
+  if BA < AA [
+    user-message (word "The value for BA must be greater than AA. Enter different values and click 'setup' again.")]
+  if AB < BB [
+    user-message (word "The value for AB must be greater than BB. Enter different values and click 'setup' again.")]
+end
 ; create the turtles in 1-dimensional lattice
 to make-turtles
   create-turtles num-nodes [
@@ -108,7 +120,21 @@ end
 to take-action
   let num-neighbors count link-neighbors
   set action-0-sum (num-neighbors - action-1-sum)
-  set action ifelse-value (action-1-sum / num-neighbors >= action-0-sum / num-neighbors) [0] [1]
+  set payoff1 (action-1-sum * AA) ;neighbor plays 1, agent plays 1
+  set payoff2 (action-1-sum * BA) ;neighbor plays 1, agent plays 0
+  set payoff3 (action-0-sum * AB) ;neighbor plays 0, agent plays 1
+  set payoff4 (action-0-sum * BB) ;neighbor plays 0, agent plays 0
+  set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
+  show mylist
+  set mylist (sort mylist)
+  set mylist (reverse mylist)
+  ;show mylist
+   if item 0 mylist = item 1 mylist [
+    set action random 2]
+   if max mylist = payoff1 [set action 1]
+   if max mylist = payoff2 [set action 0]
+   if max mylist = payoff3 [set action 1]
+   if max mylist = payoff4 [set action 0]
 end
 
 
@@ -145,27 +171,6 @@ to delete-nodes
     ]
     stop
   ]
-end
-
-to delete-link
-  user-message (word "Select two nodes to delete the link between.")
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-    ;ask link with [turtle1 turtle2][
-      ;die
-     ; display ; update the display
-  ;]
-    stop
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -272,7 +277,7 @@ num-nodes
 num-nodes
 2
 15
-6.0
+5.0
 1
 1
 NIL
@@ -307,10 +312,10 @@ NIL
 1
 
 BUTTON
-11
-300
-111
-333
+151
+322
+238
+355
 add node
 add-nodes
 T
@@ -324,10 +329,10 @@ NIL
 1
 
 BUTTON
-119
-301
-232
-334
+151
+366
+238
+399
 delete node
 delete-nodes
 T
@@ -340,21 +345,58 @@ NIL
 NIL
 1
 
-BUTTON
-129
-349
-223
-382
-delete link
-delete-link
-T
+INPUTBOX
+11
+299
+61
+359
+AA
+1.0
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
+0
+Number
+
+INPUTBOX
+65
+299
+115
+359
+AB
+4.0
+1
+0
+Number
+
+INPUTBOX
+11
+366
+61
+426
+BA
+2.0
+1
+0
+Number
+
+INPUTBOX
+65
+366
+115
+426
+BB
+3.0
+1
+0
+Number
+
+TEXTBOX
+26
+282
+176
+300
+Payoff Matrix
+11
+0.0
 1
 
 @#$#@#$#@
