@@ -322,7 +322,7 @@ If you mention this model or the NetLogo software in a publication, we ask that 
 
 For the model itself:
 
-* England, D. and Page, A. (2020).  NetLogo Contagion in 1 Dimension.
+* England, D. and Page, A. (2020).  NetLogo Contagion on a Grid.
 https://github.com/bx549/ABM
 
 Please cite the NetLogo software as:
