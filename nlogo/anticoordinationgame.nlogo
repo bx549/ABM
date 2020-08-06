@@ -116,17 +116,16 @@ to take-action
 
   set counter (0)
   loop [
-    set changeoccured (false)
+    set changeoccured (false) ;detect if agents changed their action
     set counter (counter + 1)
     foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] turtles [ i ->
       ask i [
-        let previousaction [action] of i
+        let previousaction [action] of i ;store agent's previous action
         let num-neighbors count link-neighbors
         check-neighbors
         set action-0-sum (num-neighbors - action-1-sum)
         set payoff1 (action-1-sum * AA + action-0-sum * AB)  ; if agent takes action 1
         set payoff0 (action-1-sum * BA + action-0-sum * BB)  ; if agent takes action 0
-        show (list (payoff1)(payoff0))
         set action ifelse-value payoff1 >= payoff0 [1] [0]
         if previousaction != action [set changeoccured (true)]
       ]
@@ -158,6 +157,8 @@ to add-nodes
         set color black
         set action 0
         setxy mouse-xcor mouse-ycor
+        let nbrs other turtles in-radius 10
+        create-links-with nbrs [set color white]
     ]
     stop
     ]
@@ -278,7 +279,7 @@ num-nodes
 num-nodes
 2
 15
-6.0
+4.0
 1
 1
 NIL
@@ -422,6 +423,7 @@ The rule for anti-coordination is the value of the payoffs must follow that BA >
 
 The color of an agent indicates which action is currently beging taken. Black indicates action B and white indicates action A.
 
+
 ## HOW TO USE IT
 
 SETUP sets all agents to take action B in the generated network.
@@ -436,7 +438,7 @@ RESET STATES will reset all agents to take action B in the current network. The 
 
 The PAYOFF MATRIX has 4 boxes that allow the user to enter their desired payoff values for the anti-coordination game. The payoff values must follow that BA > AA and AB > BB. If the values do not meet these requirements, an error message will pop up and the values must be changed to meet these requirements.
 
-The ADD NODE button allows the user to click and add a node to the network. The DELETE NODE button allows the user to click and delete a node, along with its links, from the network.
+The ADD NODE button allows the user to click and add a node to the network and create links to the nearest nodes. The DELETE NODE button allows the user to click and delete a node, along with its links, from the network.
 
 ## THINGS TO NOTICE
 
@@ -446,20 +448,13 @@ Bipartite networks are the only networks on which agents can anti-coordinate wit
 
 Try to find conditions under which equilibrium occurs. How does the structure of the network effect the equilibrium that does occur?
 
-## EXTENDING THE MODEL
-
-
 
 ## NETLOGO FEATURES
 
-Networks are represented using turtles and links. The user is able to use the mouse to select the agents that initially take action 1.
+Networks are represented using turtles and links. The user is able to use the mouse to select the agents that initially take action A.
 
 
 ## CREDITS AND REFERENCES
-
-This model is an implementation of some ideas that are described in Yann Bramoulle, Anti-coordination and social interactions, Games and Economic Behavior, vol 58, pp 30-49, 2007.
-
-## HOW TO CITE
 
 If you mention this model or the NetLogo software in a publication, we ask that you include the citations below.
 
