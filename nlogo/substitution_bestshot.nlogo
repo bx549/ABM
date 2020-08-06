@@ -129,6 +129,8 @@ to add-nodes
         set color black
         set action 0
         setxy mouse-xcor mouse-ycor
+        ;let nbr one-of turtles in-radius 10
+        ;create-link-with nbr [set color white]
     ]
     stop
     ]
@@ -146,41 +148,41 @@ to delete-nodes
 end
 
 to delete-link
-  user-message (word "Select two nodes to delete the link between.")
+  ;user-message (word "Select two nodes to delete the link between.")
    if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
+    ;set turtle1 min-one-of turtle [distancexy mouse-xcor mouse-ycor]
+    ;set turtle2 min-one-of turtle [distancexy mouse-xcor mouse-ycor]
+    ask link turtle1 turtle2 [
+      die
+      display
+      stop
     ]
   ]
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+   ;if mouse-down? [
+    ;ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
+     ; set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
       ;stop
-    ]
-  ]
-    ;ask link with [turtle1 turtle2][
-      ;die
-     ; display ; update the display
+    ;]
   ;]
-    stop
+    ;ask link turtle1 turtle2[
+      ;die
+      ;display ; update the display
+  ;]
+    ;stop
 end
 
 to add-link
-  user-message (word "Select two nodes to add the link between.")
    if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
+    ;user-message (word "Select two nodes to add the link between.")
+    ifelse turtle1 = 0 [set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]] [user-message (word "Select the 2nd node.")]
+      if mouse-down? [
+        if turtle2 = 0 [set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]]
+       ask turtle1 [create-link-with turtle2]
+      display
+      stop
+      ]
     ]
-  ]
-   if mouse-down? [
-    ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-      set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ]
-  ]
-  ask turtle1 [create-link-with turtle2]
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -228,10 +230,10 @@ NIL
 1
 
 BUTTON
-86
-19
-149
-52
+179
+20
+242
+53
 NIL
 go
 T
@@ -245,10 +247,10 @@ NIL
 1
 
 BUTTON
-157
-19
-242
-52
+83
+20
+168
+53
 go-once
 go
 NIL
@@ -298,7 +300,7 @@ MONITOR
 175
 170
 220
-selected turtle
+selected node
 selected
 3
 1
@@ -322,10 +324,10 @@ NIL
 1
 
 BUTTON
-11
-300
-111
-333
+9
+278
+109
+311
 add node
 add-nodes
 T
@@ -339,46 +341,12 @@ NIL
 1
 
 BUTTON
-119
-301
-232
-334
+117
+279
+230
+312
 delete node
 delete-nodes
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-129
-349
-223
-382
-delete link
-delete-link
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-20
-350
-100
-383
-add link
-add-link
 T
 1
 T
@@ -392,26 +360,30 @@ NIL
 @#$#@#$#@
 ## WHAT IS IT?
 
-This model is an implementation of "best-shot" public goods game when players are arranged in a lattice. Each agent can choose one of two possible actions: action 0 or action 1. Each agent will attempt to maximize her own payoff by to coordinating her action with that of her neighbors. The purpose of the model is to understand the conditions under which an equilibrium exists.
+This model is an implementation of "best-shot" public goods game when players are arranged in a network. Each agent can choose one of two possible actions: action 0 or action 1. 
+
+In a game of substitutes a player has a decreasing incentive to choose an action as more neighbors choose the action. In the “best-shot” public goods game, a player will receive a benefit of 1 if she or any of her neighbors take action 1. The purpose of the model is to understand the conditions under which an equilibrium exists.
 
 ## HOW IT WORKS
 
-Agents play a substitution game with their neighbors. Before taking an action, agents check to see if any of their neighbors are taking action 1. 
+Agents play a best-shot substitution game with their neighbors. Before taking an action, agents check to see if any of their neighbors are taking action 1. 
 
-Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. 
-
-Equilibrium only exists under certain conditions.
+Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. If any of the agent's neighbors are taking action 1, the agent is better off taking action 0, since taking action 1 is costly. However, taking action 1 and paying the cost is better than having nobody in the neighborhood take the action. There are many possible equilibria in the best-shot public goods game.
 
 The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
 
 
 ## HOW TO USE IT
 
-The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action 1 (at least initially).
-
-SETUP resets all agents to take action 0.
+SETUP sets all agents to take action 0 in the generated network.
 
 When GO ONCE is pressed, agents play the coordination game one time. Pressing GO causes the agents to play the game repeatedly (at each tick).
+
+The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action 1 (at least initially). The 'selected node' box will show the number of the turtle the mouse is hovering over while selecting nodes.
+
+RESET STATES will reset all agents to take action 0 in the current network. The difference between this and SETUP is the setup button will generate a new network with new links.
+
+The ADD NODE button allows the user to click and add a node to the network. The DELETE NODE button allows the user to click and delete a node, along with its links, from the network.
 
 ## THINGS TO NOTICE
 
@@ -423,7 +395,7 @@ Try creating different types of networks, e.g. a star network, a complete networ
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+Try implementing the substitution model on other types of networks. 
 
 
 ## NETLOGO FEATURES
