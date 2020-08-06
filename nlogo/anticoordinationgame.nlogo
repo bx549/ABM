@@ -239,10 +239,10 @@ NIL
 1
 
 BUTTON
-86
-19
-149
-52
+178
+21
+241
+54
 NIL
 go
 T
@@ -256,10 +256,10 @@ NIL
 1
 
 BUTTON
-157
-19
-242
-52
+83
+20
+168
+53
 go-once
 go
 NIL
@@ -309,7 +309,7 @@ MONITOR
 175
 170
 220
-selected turtle
+selected node
 selected
 3
 1
@@ -318,9 +318,9 @@ selected
 BUTTON
 19
 132
-235
+236
 165
-select nodes (to take action 1)
+select nodes (to take action A)
 select-nodes
 T
 1
@@ -423,18 +423,38 @@ Payoff Matrix
 @#$#@#$#@
 ## WHAT IS IT?
 
-This model is an implementation of an anti-coordination game when players are arranged in a network. Each agent can choose one of two possible actions: action 0 or action 1. The purpose of the model is to understand the conditions under which an equilibrium exists.
+This model is an implementation of an anti-coordination game when players are arranged in a network. Each agent can choose one of two possible actions: action A or action B. 
+
+Each agent will attempt to maximize her own payoff by anti-coordinating her action with the actions of her neighbors. The purpose of the model is to understand the conditions under which an equilibrium exists.
 
 ## HOW IT WORKS
 
+Agents play an anti-coordination game with each neighbor. Agents recieve the sum of the payoffs. The game is:
+
+    A   B
+   --- ---
+A | AA  AB
+B | BA  BB 
+
+The rule for anti-coordination is the value of the payoffs must follow that BA > AA and AB > BB. Each agent selects either A or B. The agent then plays that strategy with all of her neighbors. Equilibrium only occurs under certain conditions.
+
+The color of an agent indicates which action is currently beging taken. Black indicates action B and white indicates action A.
 
 ## HOW TO USE IT
 
-The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action 1 (at least initially).
-
-SETUP resets all agents to take action 0.
+SETUP sets all agents to take action B in the generated network.
 
 When GO ONCE is pressed, agents play the coordination game one time. Pressing GO causes the agents to play the game repeatedly (at each tick).
+
+The NUM-NODES slider allows the user to drag the slider between 2 and 15 to select the number of nodes in the network. 
+
+The SELECT NODES button allows the user to select agents with the mouse. The selected agents will take action A (at least initially). The 'selected node' box will show the number of the turtle the mouse is hovering over while selecting nodes.
+
+RESET STATES will reset all agents to take action B in the current network. The difference between this and SETUP is the setup button will generate a new network with new links.
+
+The PAYOFF MATRIX has 4 boxes that allow the user to enter their desired payoff values for the anti-coordination game. The payoff values must follow that BA > AA and AB > BB. If the values do not meet these requirements, an error message will pop up and the values must be changed to meet these requirements.
+
+The ADD NODE button allows the user to click and add a node to the network. The DELETE NODE button allows the user to click and delete a node, along with its links, from the network.
 
 ## THINGS TO NOTICE
 
@@ -442,7 +462,7 @@ Bipartite networks are the only networks on which agents can anti-coordinate wit
 
 ## THINGS TO TRY
 
-...
+Try to find conditions under which equilibrium occurs.
 
 ## EXTENDING THE MODEL
 
