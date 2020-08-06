@@ -129,7 +129,6 @@ to take-action
         set action-0-sum (num-neighbors - action-1-sum)
         set payoff1 (action-1-sum * AA + action-0-sum * AB)  ; if agent takes action 1
         set payoff0 (action-1-sum * BA + action-0-sum * BB)  ; if agent takes action 0
-        ;set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
         show (list (payoff1)(payoff0))
         set action ifelse-value payoff1 >= payoff0 [1] [0]
         if previousaction != action [set changeoccured [true]]
