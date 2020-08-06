@@ -1,4 +1,4 @@
-; a model for substitution in 1 dimension
+; a model for anti-coordination in 1 dimension
 ; some of the ideas are taken from the Language Change model
 
 globals [
@@ -10,6 +10,8 @@ globals [
   payoff2
   payoff3
   payoff4
+  changeoccured
+  counter
   ]
 
 turtles-own [
@@ -58,9 +60,6 @@ end
 ; initialize some individuals to start with action 1
 to distribute-actions
   ask turtles [ set action 0 ]
-  ; ask two neighbor nodes to switch to 1
-  ;ask (turtle-set turtle 6 turtle 7 turtle 5)
-    ;[ set action 1 ]
   ask turtles [
     set orig-action action
     update-color
@@ -100,7 +99,7 @@ end
 
 to go
   ask turtles [check-neighbors]
-  ask turtles [ take-action ]
+  take-action
   ask turtles [ update-color ]
   tick
   ;debg-actions
@@ -118,23 +117,41 @@ to check-neighbors
 end
 
 to take-action
-  let num-neighbors count link-neighbors
-  set action-0-sum (num-neighbors - action-1-sum)
-  set payoff1 (action-1-sum * AA) ;neighbor plays 1, agent plays 1
-  set payoff2 (action-1-sum * BA) ;neighbor plays 1, agent plays 0
-  set payoff3 (action-0-sum * AB) ;neighbor plays 0, agent plays 1
-  set payoff4 (action-0-sum * BB) ;neighbor plays 0, agent plays 0
-  set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
-  show mylist
-  set mylist (sort mylist)
-  set mylist (reverse mylist)
-  ;show mylist
-   if item 0 mylist = item 1 mylist [
-    set action random 2]
-   if max mylist = payoff1 [set action 1]
-   if max mylist = payoff2 [set action 0]
-   if max mylist = payoff3 [set action 1]
-   if max mylist = payoff4 [set action 0]
+  set counter (0)
+  loop [
+    set changeoccured [false]
+    set counter (counter + 1)
+    foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] turtles [ i ->
+      ask i [
+        let previousaction [action] of i
+        let num-neighbors count link-neighbors
+        check-neighbors
+        set action-0-sum (num-neighbors - action-1-sum)
+        set payoff1 (action-1-sum * AA) ;neighbor plays 1, agent plays 1
+        set payoff2 (action-1-sum * BA) ;neighbor plays 1, agent plays 0
+        set payoff3 (action-0-sum * AB) ;neighbor plays 0, agent plays 1
+        set payoff4 (action-0-sum * BB) ;neighbor plays 0, agent plays 0
+        set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
+        show mylist
+        set mylist (sort mylist)
+        set mylist (reverse mylist)
+        ;show mylist
+        if item 0 mylist = item 1 mylist [
+          set action random 2]
+        if max mylist = payoff1 [set action 1]
+        if max mylist = payoff2 [set action 0]
+        if max mylist = payoff3 [set action 1]
+        if max mylist = payoff4 [set action 0]
+        let newaction [action] of i
+        if previousaction != newaction [set changeoccured [true]]
+      ]
+    ]
+    stop
+    if changeoccured = false [stop]
+    if counter > 100 [
+      user-message (word "No equilibrium was reached.")
+      stop]
+  ]
 end
 
 
@@ -277,7 +294,7 @@ num-nodes
 num-nodes
 2
 15
-5.0
+4.0
 1
 1
 NIL
