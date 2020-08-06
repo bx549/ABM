@@ -1,5 +1,4 @@
-; a model for anti-coordination in 1 dimension
-; some of the ideas are taken from the Language Change model
+; the anti-coordination game
 
 globals [
   selected
@@ -7,15 +6,13 @@ globals [
   turtle2
   mylist
   payoff1
-  payoff2
-  payoff3
-  payoff4
+  payoff0
   changeoccured
   counter
   ]
 
 turtles-own [
-  action        ; action (either 0 or 1)
+  action        ; action (either 0/B or 1/A)
   orig-action   ; each person's initially assigned action
   action-1-sum
   action-0-sum
@@ -69,7 +66,7 @@ end
 to update-color
   set color ifelse-value action = 0 [black] [white]
 end
-
+; action 0 =B=black, action 1=A=white
 
 ;; create the links in the 1-dimensional lattice
 to create-network
@@ -80,7 +77,6 @@ to create-network
     ; only one undirected link between any two turtles is created
   ]
 end
-
 
 to reset-nodes
   clear-all-plots
@@ -131,23 +127,12 @@ to take-action
         let num-neighbors count link-neighbors
         check-neighbors
         set action-0-sum (num-neighbors - action-1-sum)
-        set payoff1 (action-1-sum * AA) ;neighbor plays 1, agent plays 1
-        set payoff2 (action-1-sum * BA) ;neighbor plays 1, agent plays 0
-        set payoff3 (action-0-sum * AB) ;neighbor plays 0, agent plays 1
-        set payoff4 (action-0-sum * BB) ;neighbor plays 0, agent plays 0
-        set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
-        show mylist
-        set mylist (sort mylist)
-        set mylist (reverse mylist)
-        ;show mylist
-        if item 0 mylist = item 1 mylist [
-          set action random 2]
-        if max mylist = payoff1 [set action 1]
-        if max mylist = payoff2 [set action 0]
-        if max mylist = payoff3 [set action 1]
-        if max mylist = payoff4 [set action 0]
-        let newaction [action] of i
-        if previousaction != newaction [set changeoccured [true]]
+        set payoff1 (action-1-sum * AA + action-0-sum * AB)  ; if agent takes action 1
+        set payoff0 (action-1-sum * BA + action-0-sum * BB)  ; if agent takes action 0
+        ;set mylist (list (payoff1)(payoff2)(payoff3)(payoff4))
+        show (list (payoff1)(payoff0))
+        set action ifelse-value payoff1 >= payoff0 [1] [0]
+        if previousaction != action [set changeoccured [true]]
       ]
     ]
     stop
@@ -298,7 +283,7 @@ num-nodes
 num-nodes
 2
 15
-4.0
+6.0
 1
 1
 NIL
@@ -431,12 +416,14 @@ Each agent will attempt to maximize her own payoff by anti-coordinating her acti
 
 Agents play an anti-coordination game with each neighbor. Agents recieve the sum of the payoffs. The game is:
 
-    A   B
-   --- ---
+```
+     A   B
+   --------
 A | AA  AB
 B | BA  BB 
+```
 
-The rule for anti-coordination is the value of the payoffs must follow that BA > AA and AB > BB. Before taking an action, agents check to see how many of neighbors are taking action A and how many are taking action B. Each agent then chooses the action (either A or B) that will maximize her own total payoff. Initially all agents are set to take action B. The user can select which agents will (at least initially) take action A. The agent then plays her selected strategy with all of her neighbors. Equilibrium only occurs under certain conditions.
+The rule for anti-coordination is the value of the payoffs must follow that BA > AA and AB > BB. Before taking an action, agents check to see how many of neighbors are taking action A and how many are taking action B. Each agent then chooses the action (either A or B) that will maximize her own total payoff. Initially all agents are set to take action B. The user can select which agents will (at least initially) take action A. The agent then plays her selected strategy with all of her neighbors. Equilibrium only occurs under certain conditions (please see the article by Bramoulle that is referenced below).
 
 The color of an agent indicates which action is currently beging taken. Black indicates action B and white indicates action A.
 
@@ -476,13 +463,15 @@ Networks are represented using turtles and links. The user is able to use the mo
 
 ## CREDITS AND REFERENCES
 
+This model is an implementation of some ideas that are described in Yann Bramoulle, Anti-coordination and social interactions, Games and Economic Behavior, vol 58, pp 30-49, 2007.
+
 ## HOW TO CITE
 
 If you mention this model or the NetLogo software in a publication, we ask that you include the citations below.
 
 For the model itself:
 
-* England, D. and Page, A. (2020).  NetLogo Contagion in 1 Dimension.
+* England, D. and Page, A. (2020).  NetLogo Anti-coordination Game.
 https://github.com/bx549/ABM
 
 Please cite the NetLogo software as:
