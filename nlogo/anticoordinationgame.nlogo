@@ -448,11 +448,10 @@ Bipartite networks are the only networks on which agents can anti-coordinate wit
 
 ## THINGS TO TRY
 
-Try to find conditions under which equilibrium occurs.
+Try to find conditions under which equilibrium occurs. How does the structure of the network effect the equilibrium that does occur?
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
 
 
 ## NETLOGO FEATURES
