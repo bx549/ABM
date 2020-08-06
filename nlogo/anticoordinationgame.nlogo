@@ -436,7 +436,7 @@ Agents play an anti-coordination game with each neighbor. Agents recieve the sum
 A | AA  AB
 B | BA  BB 
 
-The rule for anti-coordination is the value of the payoffs must follow that BA > AA and AB > BB. Each agent selects either A or B. The agent then plays that strategy with all of her neighbors. Equilibrium only occurs under certain conditions.
+The rule for anti-coordination is the value of the payoffs must follow that BA > AA and AB > BB. Before taking an action, agents check to see how many of neighbors are taking action A and how many are taking action B. Each agent then chooses the action (either A or B) that will maximize her own total payoff. Initially all agents are set to take action B. The user can select which agents will (at least initially) take action A. The agent then plays her selected strategy with all of her neighbors. Equilibrium only occurs under certain conditions.
 
 The color of an agent indicates which action is currently beging taken. Black indicates action B and white indicates action A.
 
