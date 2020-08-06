@@ -113,13 +113,10 @@ to check-neighbors
 end
 
 to take-action
-  ;I THINK problem is it updates each turtles action everytime, so turtle 0
-  ; is going to see a different network than turtle 3 will see, within an iteration
-  ;of the for loop
 
   set counter (0)
   loop [
-    set changeoccured [false]
+    set changeoccured (false)
     set counter (counter + 1)
     foreach sort-by[ [a b] -> [xcor] of a < [xcor] of b ] turtles [ i ->
       ask i [
@@ -131,10 +128,9 @@ to take-action
         set payoff0 (action-1-sum * BA + action-0-sum * BB)  ; if agent takes action 0
         show (list (payoff1)(payoff0))
         set action ifelse-value payoff1 >= payoff0 [1] [0]
-        if previousaction != action [set changeoccured [true]]
+        if previousaction != action [set changeoccured (true)]
       ]
     ]
-    stop
     if changeoccured = false [stop]
     if counter > 100 [
       user-message (word "No equilibrium was reached.")
