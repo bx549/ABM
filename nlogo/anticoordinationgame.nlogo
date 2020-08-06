@@ -117,6 +117,10 @@ to check-neighbors
 end
 
 to take-action
+  ;I THINK problem is it updates each turtles action everytime, so turtle 0
+  ; is going to see a different network than turtle 3 will see, within an iteration
+  ;of the for loop
+
   set counter (0)
   loop [
     set changeoccured [false]
