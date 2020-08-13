@@ -1,5 +1,4 @@
-; a model for substitution in 1 dimension
-; some of the ideas are taken from the Language Change model
+; a model for the 'best-shot' public goods game
 
 globals [
   selected
@@ -23,8 +22,6 @@ to setup
   select-nodes
   delete-nodes
   add-nodes
-  ;delete-link
-  ;add-link
   reset-ticks
 end
 
@@ -45,9 +42,6 @@ end
 ; initialize some individuals to start with action 1
 to distribute-actions
   ask turtles [ set action 0 ]
-  ; ask two neighbor nodes to switch to 1
-  ;ask (turtle-set turtle 6 turtle 7 turtle 5)
-    ;[ set action 1 ]
   ask turtles [
     set orig-action action
     update-color
@@ -59,7 +53,7 @@ to update-color
 end
 
 
-;; create the links in the 1-dimensional lattice
+;; create the links in the network
 to create-network
   ask turtles [
     let nbrs other turtles in-radius 10
@@ -129,8 +123,8 @@ to add-nodes
         set color black
         set action 0
         setxy mouse-xcor mouse-ycor
-        ;let nbr one-of turtles in-radius 10
-        ;create-link-with nbr [set color white]
+        let nbrs other turtles in-radius 10
+        create-links-with nbrs [set color white]
     ]
     stop
     ]
@@ -145,44 +139,6 @@ to delete-nodes
     ]
     stop
   ]
-end
-
-to delete-link
-  ;user-message (word "Select two nodes to delete the link between.")
-   if mouse-down? [
-    ;set turtle1 min-one-of turtle [distancexy mouse-xcor mouse-ycor]
-    ;set turtle2 min-one-of turtle [distancexy mouse-xcor mouse-ycor]
-    ask link turtle1 turtle2 [
-      die
-      display
-      stop
-    ]
-  ]
-   ;if mouse-down? [
-    ;ask turtles with [distancexy mouse-xcor mouse-ycor < 2] [
-     ; set turtle2 min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-      ;stop
-    ;]
-  ;]
-    ;ask link turtle1 turtle2[
-      ;die
-      ;display ; update the display
-  ;]
-    ;stop
-end
-
-to add-link
-   if mouse-down? [
-    ;user-message (word "Select two nodes to add the link between.")
-    ifelse turtle1 = 0 [set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]] [user-message (word "Select the 2nd node.")]
-      if mouse-down? [
-        if turtle2 = 0 [set turtle1 min-one-of turtles [distancexy mouse-xcor mouse-ycor]]
-       ask turtle1 [create-link-with turtle2]
-      display
-      stop
-      ]
-    ]
-
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -368,7 +324,9 @@ In a game of substitutes a player has a decreasing incentive to choose an action
 
 Agents play a best-shot substitution game with their neighbors. Before taking an action, agents check to see if any of their neighbors are taking action 1. 
 
-Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. If any of the agent's neighbors are taking action 1, the agent is better off taking action 0, since taking action 1 is costly. However, taking action 1 and paying the cost is better than having nobody in the neighborhood take the action. There are many possible equilibria in the best-shot public goods game.
+Initially all agents are set to take action 0. The user can select which agents will (at least initially) take action 1. If any of the agent's neighbors are taking action 1, the agent is better off taking action 0, since taking action 1 is costly. However, taking action 1 and paying the cost is better than having nobody in the neighborhood take the action. In general, in games of strategic substitutes, an increase in other players' actions results in relatively lower payoffs to higher actions of a given player. 
+
+There are many possible equilibria in the best-shot public goods game. The equilibria in this game directly correspond to having the set of players who choose action 1 form a maximal independent set of nodes in the network. A maximal independent set is a maximal set of nodes that have no links to each other in the network.
 
 The color of an agent indicates which action is currently beging taken. Black indicates action 0 and white indicates action 1.
 
@@ -404,6 +362,8 @@ Networks are represented using turtles and links. The user is able to use the mo
 
 
 ## CREDITS AND REFERENCES
+
+This model is an implemetation of the example described in Jackson (2014), "Games on Networks", Handbook of Game Theory: Vol 4, pp 4-15.
 
 ## HOW TO CITE
 
