@@ -113,7 +113,6 @@ to check-neighbors
 end
 
 to take-action
-
   set counter (0)
   loop [
     set changeoccured (false) ;detect if agents changed their action
@@ -131,9 +130,6 @@ to take-action
       ]
     ]
     if changeoccured = false [stop]
-    if counter > 100 [
-      user-message (word "No equilibrium was reached.")
-      stop]
   ]
 end
 
@@ -279,7 +275,7 @@ num-nodes
 num-nodes
 2
 15
-4.0
+6.0
 1
 1
 NIL
@@ -455,6 +451,10 @@ Networks are represented using turtles and links. The user is able to use the mo
 
 
 ## CREDITS AND REFERENCES
+
+This model is an implementation of some ideas that are described in Yann Bramoulle, Anti-coordination and social interactions, Games and Economic Behavior, vol 58, pp 30-49, 2007.
+
+## HOW TO CITE
 
 If you mention this model or the NetLogo software in a publication, we ask that you include the citations below.
 
